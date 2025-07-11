@@ -89,11 +89,12 @@ func ExampleMapNavigator_withModifier() {
 
 	navigator := NewMapNavigator(uppercaseModifier)
 
-	// Navigate to message and apply modifier using "-" key
-	result, err := navigator.VisitNode(data, "message", "-")
+	// Navigate to the message and let the navigator apply the modifier
+	result, err := navigator.VisitNode(data, "message")
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	fmt.Printf("Modified message: %v\n", result)
 
 	// Output:
@@ -119,12 +120,17 @@ func ExampleMapNavigator_readOnly() {
 	navigator := NewMapNavigator(toggleModifier)
 	navigator.ReadOnly = true
 
-	// Navigate and try to modify
-	result, err := navigator.VisitNode(data, "config", "debug", "-")
+	// Navigate to the value and apply modifier
+	result, err := navigator.VisitNode(data, "config", "debug")
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Result: %v\n", result)
+
+	// Apply modifier manually to demonstrate read-only behavior
+	if navigator.NodeModifier != nil {
+		modifiedResult := navigator.NodeModifier.ModifyNode(result)
+		fmt.Printf("Result: %v\n", modifiedResult)
+	}
 	fmt.Printf("Original unchanged: %v\n", data["config"].(map[string]interface{})["debug"])
 
 	// Output:
@@ -146,8 +152,8 @@ func ExampleNewMapNavigatorFunc() {
 		return node
 	})
 
-	// Apply modifier to all numbers
-	result, err := navigator.VisitNode(data, "numbers", "*", "-")
+	// Apply modifier to all numbers using wildcard
+	result, err := navigator.VisitNode(data, "numbers", "*")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -173,10 +179,10 @@ func ExampleMapNavigator_createProperty() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Created property: %v\n", result)
+	fmt.Printf("Created property:%v\n", result)
 	fmt.Printf("Data now contains: %v\n", data["user"])
 
 	// Output:
-	// Created property: 
+	// Created property:
 	// Data now contains: map[email: name:John]
 }

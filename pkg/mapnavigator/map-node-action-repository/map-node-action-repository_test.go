@@ -6,7 +6,6 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	map_nav_models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
 	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository"
 	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
@@ -42,7 +41,7 @@ func TestNewMapNodeModifierRepository(t *testing.T) {
 	assert.NotNil(t, repo)
 	assert.NotNil(t, repo.RWMutex)
 	assert.NotNil(t, repo.MapNodeModifierCollection)
-	
+
 	// Verify default modifiers are registered
 	expectedModifiers := []string{"set", "replace", "conditional", "composite", "expand", "delete"}
 	for _, name := range expectedModifiers {
@@ -54,18 +53,18 @@ func TestNewMapNodeModifierRepository(t *testing.T) {
 func TestMapNodeModifierRepository_Register(t *testing.T) {
 	tmplConfig := templates.TemplateConfig{}
 	repo := map_node_action_repository.NewMapNodeModifierRepository(tmplConfig)
-	
+
 	// Custom modifier function
 	customModifier := func(config interface{}, mapContext map[string]interface{}, templateConfig templates.TemplateConfig) map_nav_models.MapNodeModifier {
 		return map_nav_models.MapNodeModifierFunc(func(v interface{}) interface{} {
 			return "custom-" + v.(string)
 		})
 	}
-	
+
 	// Register custom modifier
 	result := repo.Register("custom", customModifier)
 	assert.Equal(t, repo, result) // Should return self for chaining
-	
+
 	// Verify registration
 	_, exists := repo.MapNodeModifierCollection["custom"]
 	assert.True(t, exists)
@@ -77,7 +76,7 @@ func TestMapNodeModifierRepository_Get(t *testing.T) {
 		RightDelim: "}}",
 	}
 	repo := map_node_action_repository.NewMapNodeModifierRepository(tmplConfig)
-	
+
 	tests := []struct {
 		name         string
 		modifierName string
@@ -185,7 +184,7 @@ func TestMapNodeModifierRepository_Get(t *testing.T) {
 			},
 		},
 	}
-	
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			if tt.modifierName == "non-existent" {
@@ -196,9 +195,9 @@ func TestMapNodeModifierRepository_Get(t *testing.T) {
 					}
 				}()
 			}
-			
+
 			modifier, exists := repo.Get(tt.modifierName, tt.config, tt.mapContext)
-			
+
 			if tt.modifierName != "non-existent" {
 				assert.True(t, exists)
 				assert.NotNil(t, modifier)
@@ -214,7 +213,7 @@ func TestMapNodeModifierRepository_ConditionalWithChildModifiers(t *testing.T) {
 		RightDelim: "}}",
 	}
 	repo := map_node_action_repository.NewMapNodeModifierRepository(tmplConfig)
-	
+
 	// Create conditional config with child modifiers
 	config := &models.MapNodeModifierConfig{
 		Options: &models.MapNodeConditionalModifierConfig{
@@ -233,10 +232,10 @@ func TestMapNodeModifierRepository_ConditionalWithChildModifiers(t *testing.T) {
 			},
 		},
 	}
-	
+
 	modifier, exists := repo.Get("conditional", config, map[string]interface{}{})
 	assert.True(t, exists)
-	
+
 	condModifier, ok := modifier.(*map_node_conditional_modifier.MapNodeConditionalModifier)
 	assert.True(t, ok)
 	assert.NotNil(t, condModifier.IfTrue)
@@ -249,7 +248,7 @@ func TestMapNodeModifierRepository_CompositeWithChildModifiers(t *testing.T) {
 		RightDelim: "}}",
 	}
 	repo := map_node_action_repository.NewMapNodeModifierRepository(tmplConfig)
-	
+
 	// Create composite config with child modifiers
 	config := &models.MapNodeModifierConfig{
 		Options: &models.MapNodeCompositeModifierConfig{
@@ -270,10 +269,10 @@ func TestMapNodeModifierRepository_CompositeWithChildModifiers(t *testing.T) {
 			},
 		},
 	}
-	
+
 	modifier, exists := repo.Get("composite", config, map[string]interface{}{})
 	assert.True(t, exists)
-	
+
 	compModifier, ok := modifier.(*map_node_composite_modifier.MapNodeCompositeModifier)
 	assert.True(t, ok)
 	assert.Len(t, compModifier.NodeActions, 2)
@@ -282,11 +281,11 @@ func TestMapNodeModifierRepository_CompositeWithChildModifiers(t *testing.T) {
 func TestMapNodeModifierRepository_ConcurrentAccess(t *testing.T) {
 	tmplConfig := templates.TemplateConfig{}
 	repo := map_node_action_repository.NewMapNodeModifierRepository(tmplConfig)
-	
+
 	// Test concurrent reads and writes
 	var wg sync.WaitGroup
 	numGoroutines := 10
-	
+
 	// Concurrent registrations
 	for i := 0; i < numGoroutines; i++ {
 		wg.Add(1)
@@ -300,7 +299,7 @@ func TestMapNodeModifierRepository_ConcurrentAccess(t *testing.T) {
 			})
 		}(i)
 	}
-	
+
 	// Concurrent reads
 	for i := 0; i < numGoroutines; i++ {
 		wg.Add(1)
@@ -314,9 +313,9 @@ func TestMapNodeModifierRepository_ConcurrentAccess(t *testing.T) {
 			_, _ = repo.Get("set", config, map[string]interface{}{})
 		}()
 	}
-	
+
 	wg.Wait()
-	
+
 	// Verify all custom modifiers were registered
 	for i := 0; i < numGoroutines; i++ {
 		name := fmt.Sprintf("custom%d", i)
@@ -331,13 +330,13 @@ func BenchmarkMapNodeModifierRepository_Get(b *testing.B) {
 		RightDelim: "}}",
 	}
 	repo := map_node_action_repository.NewMapNodeModifierRepository(tmplConfig)
-	
+
 	config := &models.MapNodeModifierConfig{
 		Options: &models.MapNodeSetModifierConfig{
 			ValueToSet: "test-value",
 		},
 	}
-	
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_, _ = repo.Get("set", config, map[string]interface{}{})
@@ -351,7 +350,7 @@ func ExampleMapNodeModifierRepository_Register() {
 		RightDelim: "}}",
 	}
 	repo := map_node_action_repository.NewMapNodeModifierRepository(tmplConfig)
-	
+
 	// Register a custom modifier
 	repo.Register("uppercase", func(config interface{}, mapContext map[string]interface{}, templateConfig templates.TemplateConfig) map_nav_models.MapNodeModifier {
 		return map_nav_models.MapNodeModifierFunc(func(v interface{}) interface{} {
@@ -361,9 +360,12 @@ func ExampleMapNodeModifierRepository_Register() {
 			return v
 		})
 	})
-	
+
 	// Use the custom modifier
 	modifier, _ := repo.Get("uppercase", nil, map[string]interface{}{})
 	result := modifier.ModifyNode("hello")
-	println(result) // Output: HELLO
+	fmt.Println(result)
+
+	// Output:
+	// HELLO
 }
