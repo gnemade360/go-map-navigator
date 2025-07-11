@@ -8,13 +8,23 @@ import (
 	models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
 )
 
+// MapNavigator provides functionality for navigating and modifying nested map and slice data structures.
+// It supports various navigation patterns including wildcard operations, conditional modifications,
+// and property creation.
 type MapNavigator struct {
+	// NodeModifier is applied to nodes during navigation when the "-" key is encountered
 	NodeModifier   models.MapNodeModifier
+	// keys stores the current navigation path
 	keys           []string
+	// ReadOnly when true, prevents modifications to the data structure
 	ReadOnly       bool
+	// CreateProperty when true, creates missing properties during navigation
 	CreateProperty bool
 }
 
+// VisitMapNode navigates a map with interface{} keys using the provided key path.
+// It supports wildcard operations (*), modifier application (-), and nested navigation.
+// Returns the value at the specified path or an error if navigation fails.
 func (m *MapNavigator) VisitMapNode(mp map[interface{}]interface{}, ks ...string) (interface{}, error) {
 	if len(m.keys) == 0 {
 		m.keys = ks
@@ -74,6 +84,9 @@ func (m *MapNavigator) VisitMapNode(mp map[interface{}]interface{}, ks ...string
 	return nil, fmt.Errorf("key \"%v\" not found in map error in mapnavigator", k)
 }
 
+// VisitMapStringNode navigates a map with string keys using the provided key path.
+// It supports wildcard operations (*), modifier application (-), and nested navigation.
+// Returns the value at the specified path or an error if navigation fails.
 func (m *MapNavigator) VisitMapStringNode(mp map[string]interface{}, ks ...string) (interface{}, error) {
 	//if len(m.keys) == 0 {
 	m.keys = ks
@@ -174,6 +187,8 @@ func (m *MapNavigator) VisitMapStringNode(mp map[string]interface{}, ks ...strin
 	return nil, fmt.Errorf("key \"%v\" not found in map error in mapnavigator", k)
 }
 
+// GetLength returns the effective length of a key slice, accounting for wildcard suffixes.
+// It subtracts 1 from the length if the last key is a wildcard (*).
 func GetLength(ks []string) int {
 	sub := 0
 	length := len(ks)
@@ -183,6 +198,9 @@ func GetLength(ks []string) int {
 	return length - sub
 }
 
+// VisitSliceNode navigates a slice using the provided key path.
+// It supports numeric indices, wildcard operations (*), and modifier application (-).
+// Returns the value at the specified path or an error if navigation fails.
 func (m *MapNavigator) VisitSliceNode(arr []interface{}, ks ...string) (interface{}, error) {
 	//if len(m.keys) == 0 {
 	m.keys = ks
@@ -277,6 +295,9 @@ func appendToToreturn(itm interface{}, toReturn []interface{}, obj interface{}) 
 	return toReturn
 }
 
+// VisitValueNode handles terminal values during navigation.
+// It applies modifiers if present and validates that no additional keys remain.
+// Returns the (potentially modified) value or an error if keys remain.
 func (m *MapNavigator) VisitValueNode(mp interface{}, ks ...string) (interface{}, error) {
 	//if len(m.keys) == 0 {
 	m.keys = ks
@@ -290,6 +311,9 @@ func (m *MapNavigator) VisitValueNode(mp interface{}, ks ...string) (interface{}
 	return mp, nil
 }
 
+// VisitNode is the main entry point for navigating any data structure.
+// It automatically detects the type (map, slice, or value) and delegates to the appropriate visitor.
+// Returns the value at the specified path or an error if navigation fails.
 func (m *MapNavigator) VisitNode(mp interface{}, ks ...string) (interface{}, error) {
 	//if len(m.keys) == 0 {
 	m.setKeys(ks)
@@ -354,10 +378,16 @@ func (m *MapNavigator) setKeys(ks []string) {
 //    return mp, nil
 //}
 
+// KeyConfig represents configuration for a navigation key, including array index information.
+// This type is used internally for key parsing and navigation logic.
 type KeyConfig struct {
+	// OriginalKey is the unprocessed key string
 	OriginalKey string
+	// Key is the processed key string
 	Key         string
+	// IsArray indicates if this key represents an array access
 	IsArray     bool
+	// Index is the array index if IsArray is true
 	Index       int
 }
 
@@ -382,21 +412,30 @@ type KeyConfig struct {
 //}
 
 // MapNavigator options
+// MapNavigatorOption defines a function type for configuring MapNavigator instances.
+// This allows for flexible configuration using the functional options pattern.
 type MapNavigatorOption func(*MapNavigator)
 
 // NewMapNavigator accepts a slice of option functions as the rest arguments
+// NewMapNavigator creates a new MapNavigator instance with the specified node modifier.
+// The modifier will be applied to nodes when the "-" key is encountered during navigation.
 func NewMapNavigator(fn models.MapNodeModifier) *MapNavigator {
 	obj := &MapNavigator{}
 	obj.NodeModifier = fn
 	return obj
 }
 
+// NewMapNavigatorFunc creates a new MapNavigator instance with a function-based modifier.
+// This is a convenience function for cases where the modifier is a simple function.
 func NewMapNavigatorFunc(fn models.MapNodeModifierFunc) *MapNavigator {
 	obj := &MapNavigator{}
 	obj.NodeModifier = models.MapNodeModifier(fn)
 	return obj
 }
 
+// MapNavigatorDeleted is a marker type used to indicate that a value should be deleted.
+// When a modifier returns this type, the navigator will remove the corresponding key/value.
 type MapNavigatorDeleted struct {
+	// Original holds the original value before deletion
 	Original interface{}
 }

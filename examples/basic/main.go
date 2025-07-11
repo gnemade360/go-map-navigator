@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 
 	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
 	models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"

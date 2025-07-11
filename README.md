@@ -1,164 +1,239 @@
-# go-map-navigator
+# Go Map Navigator
 
-🗺️ A lightweight Go library for navigating nested data structures with dot notation, wildcards, and array indexing
+A flexible Go library for navigating, querying, and modifying nested map and slice data structures using simple string paths.
 
-## 🚀 Features
+[![Go Reference](https://pkg.go.dev/badge/github.com/passionintellectual/go-map-navigator.svg)](https://pkg.go.dev/github.com/passionintellectual/go-map-navigator)
+[![Go Report Card](https://goreportcard.com/badge/github.com/passionintellectual/go-map-navigator)](https://goreportcard.com/report/github.com/passionintellectual/go-map-navigator)
 
-- **Dot Notation**: Access nested values with `"user.address.city"`
-- **Wildcards**: Get all matching values with `"users.*.email"`
-- **Array Indexing**: Access array elements with `"items[0].name"`
-- **Type Safety**: Automatic type conversions with safety checks
-- **Zero Dependencies**: Only uses Go standard library
-- **High Performance**: Optimized for speed with minimal allocations
-- **Create Mode**: Optionally create missing paths
-- **Read/Write**: Support for both reading and modifying values
-- **Node Modifiers**: Transform values during navigation
-- **Template Support**: Dynamic value resolution with Go templates
+## Features
 
-## 📦 Installation
+- **Simple Navigation**: Navigate nested data structures using string paths
+- **Wildcard Operations**: Process all elements in maps or arrays using the `*` wildcard
+- **Flexible Modifiers**: Apply custom transformations during navigation
+- **Read-Only Mode**: Safely query data without modifications
+- **Property Creation**: Dynamically create missing properties during navigation
+- **Type Safety**: Comprehensive type checking and error handling
+- **Extensible**: Easy to implement custom modifiers and conditions
+
+## Installation
 
 ```bash
 go get github.com/passionintellectual/go-map-navigator
 ```
 
-## 🔧 Quick Start
+## Quick Start
 
 ```go
 package main
 
 import (
     "fmt"
+    "log"
+    
     "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
 )
 
 func main() {
-    // Sample nested data
+    // Sample data structure
     data := map[string]interface{}{
         "users": []interface{}{
             map[string]interface{}{
-                "name": "John Doe",
-                "age": 30,
-                "address": map[string]interface{}{
-                    "city": "New York",
-                    "country": "USA",
-                },
+                "name":  "John Doe",
+                "email": "john@example.com",
+                "age":   30,
             },
             map[string]interface{}{
-                "name": "Jane Smith",
-                "age": 25,
-                "address": map[string]interface{}{
-                    "city": "London",
-                    "country": "UK",
-                },
+                "name":  "Jane Smith",
+                "email": "jane@example.com",
+                "age":   25,
             },
         },
-        "settings": map[string]interface{}{
-            "theme": "dark",
-            "notifications": true,
+        "config": map[string]interface{}{
+            "debug": true,
+            "port":  8080,
         },
     }
 
-    // Create a navigator
-    nav := &mapnavigator.MapNavigator{
-        ReadOnly: true, // Set to false to allow modifications
-    }
+    // Create navigator
+    navigator := mapnavigator.NewMapNavigator(nil)
 
-    // Simple navigation
-    city, err := nav.VisitMapStringNode(data, "users", "0", "address", "city")
-    if err == nil {
-        fmt.Println("City:", city) // Output: City: New York
+    // Navigate to specific values
+    result, err := navigator.VisitNode(data, "users", "0", "name")
+    if err != nil {
+        log.Fatal(err)
     }
+    fmt.Printf("First user: %v\n", result) // Output: John Doe
 
-    // Using wildcards
-    names, err := nav.VisitMapStringNode(data, "users", "*", "name")
-    if err == nil {
-        fmt.Println("Names:", names) // Output: Names: [John Doe Jane Smith]
+    // Navigate to config
+    result, err = navigator.VisitNode(data, "config", "port")
+    if err != nil {
+        log.Fatal(err)
     }
+    fmt.Printf("Port: %v\n", result) // Output: 8080
 }
 ```
 
-## 📖 Advanced Usage
-
-### Node Modifiers
-
-Transform values during navigation:
+### Wildcard Operations
 
 ```go
+// Get all user names
+result, err := navigator.VisitNode(data, "users", "*", "name")
+if err != nil {
+    log.Fatal(err)
+}
+fmt.Printf("All names: %v\n", result) // Output: [John Doe Jane Smith]
+```
+
+### Using Modifiers
+
+```go
+package main
+
 import (
-    "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-set-modifier"
+    "fmt"
+    "strings"
+    
+    "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
+    "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
 )
 
-// Create a modifier to set a value
-setModifier := &map_node_set_modifier.MapNodeSetModifier{
-    Value: "San Francisco",
-}
+func main() {
+    data := map[string]interface{}{
+        "message": "hello world",
+    }
 
-nav := &mapnavigator.MapNavigator{
-    NodeModifier: setModifier,
-    ReadOnly:     false,
-}
+    // Create a modifier that converts strings to uppercase
+    uppercaseModifier := models.MapNodeModifierFunc(func(node interface{}) interface{} {
+        if str, ok := node.(string); ok {
+            return strings.ToUpper(str)
+        }
+        return node
+    })
 
-// This will set the city to "San Francisco"
-nav.VisitMapStringNode(data, "users", "0", "address", "city")
+    navigator := mapnavigator.NewMapNavigator(uppercaseModifier)
+
+    // Apply modifier using "-" key
+    result, err := navigator.VisitNode(data, "message", "-")
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Modified: %v\n", result) // Output: HELLO WORLD
+}
 ```
 
-### Creating Missing Paths
+## Path Syntax
+
+The library uses a simple string-based path syntax:
+
+- `"key"` - Access map key
+- `"0"`, `"1"`, `"2"` - Access array element by index
+- `"*"` - Apply operation to all elements in map or array
+- `"-"` - Apply modifier to current node
+
+## Navigation Examples
+
+### Maps
+```go
+// Navigate to nested map value
+result, err := navigator.VisitNode(data, "config", "database", "host")
+```
+
+### Arrays
+```go
+// Navigate to array element
+result, err := navigator.VisitNode(data, "users", "0", "name")
+```
+
+### Wildcards
+```go
+// Process all elements
+result, err := navigator.VisitNode(data, "users", "*", "email")
+```
+
+### Modifiers
+```go
+// Apply modifier to current node
+result, err := navigator.VisitNode(data, "users", "0", "name", "-")
+```
+
+## Configuration Options
+
+### Read-Only Mode
+```go
+navigator := mapnavigator.NewMapNavigator(nil)
+navigator.ReadOnly = true
+```
+
+### Property Creation
+```go
+navigator := mapnavigator.NewMapNavigator(nil)
+navigator.CreateProperty = true
+```
+
+## Available Modifiers
+
+The library includes several built-in modifiers:
+
+- **Set Modifier**: Set values at specific paths
+- **Delete Modifier**: Remove elements from data structures
+- **Replace Modifier**: Replace values based on conditions
+- **Conditional Modifier**: Apply modifiers based on conditions
+- **Composite Modifier**: Chain multiple modifiers together
+- **Expand Collection Modifier**: Flatten nested collections
+
+## Custom Modifiers
+
+You can create custom modifiers by implementing the `MapNodeModifier` interface:
 
 ```go
-nav := &mapnavigator.MapNavigator{
-    CreateProperty: true,
-    ReadOnly:       false,
-}
+type CustomModifier struct{}
 
-// This will create the path if it doesn't exist
-nav.VisitMapStringNode(data, "users", "0", "profile", "bio")
+func (c CustomModifier) ModifyNode(node interface{}) interface{} {
+    // Your custom logic here
+    return node
+}
 ```
 
-## 🛠️ API Reference
-
-### MapNavigator
-
-The main struct for navigating maps:
+Or use the function-based approach:
 
 ```go
-type MapNavigator struct {
-    NodeModifier   models.MapNodeModifier // Optional modifier for transforming values
-    ReadOnly       bool                   // If true, prevents modifications
-    CreateProperty bool                   // If true, creates missing paths
+modifier := models.MapNodeModifierFunc(func(node interface{}) interface{} {
+    // Your custom logic here
+    return node
+})
+```
+
+## Error Handling
+
+The library provides comprehensive error handling:
+
+```go
+result, err := navigator.VisitNode(data, "nonexistent", "key")
+if err != nil {
+    fmt.Printf("Navigation error: %v\n", err)
 }
 ```
 
-### Methods
+## Thread Safety
 
-- `VisitMapNode(mp map[interface{}]interface{}, ks ...string) (interface{}, error)` - Navigate a map with interface{} keys
-- `VisitMapStringNode(mp map[string]interface{}, ks ...string) (interface{}, error)` - Navigate a map with string keys
-- `VisitNode(node interface{}, ks ...string) (interface{}, error)` - Navigate any node (map, slice, or value)
+`MapNavigator` instances are not thread-safe. Create separate instances for concurrent operations or use appropriate synchronization mechanisms.
 
-### Special Keys
+## Documentation
 
-- `*` - Wildcard: matches all keys at the current level
-- `-` - Apply node modifier to current value
-- `[n]` - Array index notation (when used in path strings)
+For complete API documentation, visit [pkg.go.dev](https://pkg.go.dev/github.com/passionintellectual/go-map-navigator).
 
-## 🧩 Node Modifiers
+## Examples
 
-Available modifiers in the `map-node-modifiers` package:
+More examples can be found in the `examples/` directory and in the test files throughout the codebase.
 
-- **SetModifier**: Set a value at the target location
-- **DeleteModifier**: Delete a value at the target location
-- **ReplaceModifier**: Replace values matching a pattern
-- **ConditionalModifier**: Apply modifications based on conditions
-- **CompositeModifier**: Combine multiple modifiers
-- **ExpandCollectionModifier**: Expand collections with templates
-
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+## Support
 
-Originally extracted from `go-common-lib` to provide a standalone, reusable map navigation library for the Go community.
+If you encounter any issues or have questions, please open an issue on GitHub.
