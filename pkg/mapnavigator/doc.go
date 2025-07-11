@@ -1,5 +1,7 @@
 // Package mapnavigator provides a flexible library for navigating, querying, and modifying nested map and slice data structures.
 //
+// Author: Ganesh Nemade
+//
 // This library allows you to traverse deeply nested data structures using simple string paths,
 // apply modifiers to transform data, and handle complex data manipulation scenarios with ease.
 //
