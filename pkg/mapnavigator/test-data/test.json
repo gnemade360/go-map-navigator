@@ -1,0 +1,1605 @@
+{
+	"testArr": [
+		["t", "u"],
+		["a", "b"]
+	],
+	"shouldDeleteItemArray": [
+		{
+			"name": "0-0",
+			"city": "city-0-0"
+			
+		},{
+			"name": "0-1",
+			"city": "city-0-1"
+		},
+		{
+			"name": "0-2",
+			"city": "city-0-2"
+		}
+	],
+	"testObjArray": [
+		[
+			{
+				"name": "0-0",
+				"city": "city-0-0"
+				
+			},
+			{
+				"name": "0-1",
+				"city": "city-0-1"
+			}
+		],
+		[
+			{
+				"name": "1-0",
+				"city": "city-1-0"
+			},
+			{
+				"name": "1-1",
+				"city": "city-1-1"
+			}
+		]
+	],
+	
+	"id": "de056a78-34b4-4563-8640-7c6503b23669",
+	"metadata": {
+		"configurationVersions": [
+			5
+		],
+		"clusterVersion": "1.226.126.20211018-080518"
+	},
+	"dashboardMetadata": {
+		"name": "[COBALT-0002] - [SAP Ariba Docker] - Ganesh-cloned",
+		"shared": false,
+		"owner": "I517945",
+		"tags": [
+			"sa-id=sap-ariba-docker",
+			"sa-strategy=OVERWRITE",
+			"TESTAPI",
+			"NewChanges"
+		],
+		"preset": false,
+		"dashboardFilter": {
+			"timeframe": ""
+		}
+	},
+	"tiles": [
+		{
+			"name": "Markdown",
+			"tileType": "MARKDOWN",
+			"configured": true,
+			"bounds": {
+				"top": 0,
+				"left": 988,
+				"width": 190,
+				"height": 38
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"markdown": "## CCCCCCCCContainers",
+			"DDID": null
+		},
+		{
+			"name": "Markdown",
+			"tileType": "MARKDOWN",
+			"configured": true,
+			"bounds": {
+				"top": 646,
+				"left": 646,
+				"width": 646,
+				"height": 76
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"markdown": "## Memory\n",
+			"DDID": null
+		},
+		{
+			"name": "Markdown",
+			"tileType": "MARKDOWN",
+			"configured": true,
+			"bounds": {
+				"top": 646,
+				"left": 1292,
+				"width": 646,
+				"height": 76
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"markdown": "## Network",
+			"DDID": null
+		},
+		{
+			"name": "Markdown",
+			"tileType": "MARKDOWN",
+			"configured": true,
+			"bounds": {
+				"top": 646,
+				"left": 0,
+				"width": 646,
+				"height": 76
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"markdown": "## CPU",
+			"DDID": null
+		},
+		{
+			"name": "Markdown",
+			"tileType": "MARKDOWN",
+			"configured": true,
+			"bounds": {
+				"top": 646,
+				"left": 1938,
+				"width": 646,
+				"height": 76
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"markdown": "## I/O",
+			"DDID": null
+		},
+		{
+			"name": "Running Containers [X by image] (1h)",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 228,
+				"left": 646,
+				"width": 836,
+				"height": 418
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.no_of_containers_running",
+					"spaceAggregation": "SUM",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.docker_container_group_instance"
+					],
+					"sortBy": "DESC",
+					"limit": 100,
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "Number of containers running",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Swap by image",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 950,
+				"left": 646,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:host.mem.swap.avail",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "GRAPH_CHART",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Count Running containers by Host",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 1634,
+				"left": 0,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.cpu.usageTime",
+					"spaceAggregation": "COUNT",
+					"timeAggregation": "DEFAULT",
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "GRAPH_CHART",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Most RAM-intensive containers",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 1406,
+				"left": 646,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.memory_usage2",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.docker_container_group_instance"
+					],
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "TOP_LIST",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Running Containers by image",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 38,
+				"left": 1482,
+				"width": 456,
+				"height": 608
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.no_of_containers_running",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.docker_container_group_instance"
+					],
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "TOP_LIST",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Running Container Change (5m)",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 38,
+				"left": 646,
+				"width": 304,
+				"height": 190
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.no_of_containers_per_pgi",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.process_group_instance"
+					],
+					"sortBy": "DESC",
+					"limit": 100,
+					"enabled": false,
+					"filterBy": {
+						"filterOperator": "AND",
+						"nestedFilters": [
+							{
+								"filterOperator": "OR",
+								"filter": "dt.entity.process_group_instance",
+								"filterType": "TAG",
+								"criteria": [
+									{
+										"value": "[Environment]DT_APPLICATION_ENVIRONMENT:devfarm",
+										"evaluator": "IN"
+									}
+								]
+							}
+						]
+					}
+				},
+				{
+					"id": "B",
+					"metric": "builtin:containers.no_of_containers_per_pgi",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.process_group_instance"
+					],
+					"sortBy": "DESC",
+					"limit": 100,
+					"enabled": true,
+					"filterBy": {
+						"filterOperator": "AND",
+						"nestedFilters": [
+							{
+								"filterOperator": "OR",
+								"filter": "dt.entity.process_group_instance",
+								"filterType": "TAG",
+								"criteria": [
+									{
+										"value": "[Environment]DT_APPLICATION_ENVIRONMENT:devfarm",
+										"evaluator": "IN"
+									}
+								]
+							}
+						]
+					}
+				}
+			],
+			"visualConfig": {
+				"type": "SINGLE_VALUE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Running Containers (1m)",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 38,
+				"left": 950,
+				"width": 266,
+				"height": 190
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.no_of_containers_per_pgi",
+					"spaceAggregation": "SUM",
+					"timeAggregation": "DEFAULT",
+					"enabled": true,
+					"filterBy": {
+						"filterOperator": "AND",
+						"nestedFilters": [
+							{
+								"filterOperator": "OR",
+								"filter": "dt.entity.process_group_instance",
+								"filterType": "TAG",
+								"criteria": [
+									{
+										"value": "[Environment]DT_APPLICATION_ENVIRONMENT:devfarm",
+										"evaluator": "IN"
+									}
+								]
+							}
+						]
+					}
+				}
+			],
+			"visualConfig": {
+				"type": "SINGLE_VALUE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Stoped Containers (1m)",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 38,
+				"left": 1216,
+				"width": 266,
+				"height": 190
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.no_of_containers_terminated",
+					"spaceAggregation": "SUM",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.docker_container_group_instance"
+					],
+					"sortBy": "DESC",
+					"limit": 100,
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "Number of containers terminated",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "CPU user by image",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 722,
+				"left": 0,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"enabled": true,
+					"filterBy": {},
+					"metricSelector": "builtin:containers.cpu.usageTime:splitBy(\"dt.entity.container_group_instance\"):timeshift(-5m):auto:sort(value(avg,descending)):limit(10)"
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "CPU system by image",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 950,
+				"left": 0,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.cpu.usageSystemTime",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.container_group_instance"
+					],
+					"sortBy": "DESC",
+					"limit": 100,
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Most CPU-intensive containers",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 1178,
+				"left": 0,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.cpu.usageUserTime",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.container_group_instance"
+					],
+					"sortBy": "DESC",
+					"limit": 10,
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "TOP_LIST",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "CPU by container",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 1406,
+				"left": 0,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.cpu.usageUserTime",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.container_group_instance"
+					],
+					"sortBy": "DESC",
+					"limit": 10,
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [
+					{
+						"matcher": "A:",
+						"properties": {
+							"alias": null,
+							"color": null,
+							"seriesType": "AREA"
+						}
+					}
+				],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Cache memory by image",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 1178,
+				"left": 646,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.memory.cacheBytes",
+					"spaceAggregation": "SUM",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.container_group_instance"
+					],
+					"sortBy": "DESC",
+					"limit": 10,
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Memory by container",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 1634,
+				"left": 646,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.memory.residentSetBytes",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"Container"
+					],
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Avg Avg. rx bytes by image",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 722,
+				"left": 1292,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.bytes_rx2",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.docker_container_group_instance"
+					],
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "GRAPH_CHART",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "Container bytes received",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Avg Avg. tx bytes by image",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 950,
+				"left": 1292,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.bytes_tx2",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.docker_container_group_instance",
+						"container_id"
+					],
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "GRAPH_CHART",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "Container bytes transmitted",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Most tx-intensive containers",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 1178,
+				"left": 1292,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.bytes_tx2",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.docker_container_group_instance",
+						"container_id"
+					],
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "TOP_LIST",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "tx by container",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 1406,
+				"left": 1292,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.bytes_tx2",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.docker_container_group_instance",
+						"container_id"
+					],
+					"enabled": true,
+					"filterBy": {}
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Avg Avg. I/O bytes read by image",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 722,
+				"left": 1938,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:host.disk.bytesRead",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.host"
+					],
+					"enabled": true,
+					"filterBy": {
+						"filterOperator": "AND",
+						"nestedFilters": [
+							{
+								"filterOperator": "OR",
+								"filter": "dt.entity.host",
+								"filterType": "TAG",
+								"criteria": [
+									{
+										"value": "[GoogleCloud]cobalt-devfarm",
+										"evaluator": "IN"
+									}
+								]
+							}
+						]
+					}
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Avg Avg. I/O bytes written by image",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 950,
+				"left": 1938,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:host.disk.bytesWritten",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.host"
+					],
+					"enabled": true,
+					"filterBy": {
+						"filterOperator": "AND",
+						"nestedFilters": [
+							{
+								"filterOperator": "OR",
+								"filter": "dt.entity.host",
+								"filterType": "TAG",
+								"criteria": [
+									{
+										"value": "[GoogleCloud]cobalt-devfarm",
+										"evaluator": "IN"
+									}
+								]
+							}
+						]
+					}
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": []
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "RSS memory by image",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 722,
+				"left": 646,
+				"width": 646,
+				"height": 228
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:containers.memory.residentSetBytes",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.container_group_instance"
+					],
+					"sortBy": "DESC",
+					"limit": 10,
+					"enabled": true,
+					"filterBy": {
+						"filterOperator": "AND",
+						"nestedFilters": [
+							{
+								"filterOperator": "OR",
+								"filter": "dt.entity.container_group_instance",
+								"filterType": "TAG",
+								"criteria": [
+									{
+										"value": "env:devfarm",
+										"evaluator": "IN"
+									}
+								]
+							}
+						]
+					}
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "Memory usage",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": [
+						{
+							"defaultAxis": true,
+							"displayName": "",
+							"max": "AUTO",
+							"min": "AUTO",
+							"position": "LEFT",
+							"queryIds": [
+								"A"
+							],
+							"visible": true
+						}
+					]
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Avg Avg. I/O bytes written by image",
+			"tileType": "DATA_EXPLORER",
+			"configured": true,
+			"bounds": {
+				"top": 0,
+				"left": 0,
+				"width": 304,
+				"height": 304
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"customName": "Data explorer results",
+			"queries": [
+				{
+					"id": "A",
+					"metric": "builtin:host.disk.bytesWritten",
+					"spaceAggregation": "AVG",
+					"timeAggregation": "DEFAULT",
+					"splitBy": [
+						"dt.entity.host"
+					],
+					"enabled": true,
+					"filterBy": {
+						"filterOperator": "AND",
+						"nestedFilters": [
+							{
+								"filterOperator": "OR",
+								"filter": "dt.entity.host",
+								"filterType": "TAG",
+								"criteria": [
+									{
+										"value": "[GoogleCloud]cobalt-devfarm",
+										"evaluator": "IN"
+									}
+								]
+							}
+						]
+					}
+				}
+			],
+			"visualConfig": {
+				"type": "TABLE",
+				"global": {
+					"theme": "DEFAULT",
+					"threshold": {
+						"axisTarget": "LEFT",
+						"columnId": "",
+						"rules": [
+							{
+								"color": "#7dc540"
+							},
+							{
+								"color": "#f5d30f"
+							},
+							{
+								"color": "#dc172a"
+							}
+						]
+					},
+					"seriesType": "LINE"
+				},
+				"rules": [],
+				"axes": {
+					"xAxis": {
+						"visible": true
+					},
+					"yAxes": [
+						{
+							"defaultAxis": true,
+							"displayName": "",
+							"max": "AUTO",
+							"min": "AUTO",
+							"position": "LEFT",
+							"queryIds": [
+								"A"
+							],
+							"visible": true
+						}
+					]
+				}
+			},
+			"DDID": null
+		},
+		{
+			"name": "Markdown",
+			"tileType": "MARKDOWN",
+			"configured": true,
+			"bounds": {
+				"top": 1862,
+				"left": 0,
+				"width": 304,
+				"height": 152
+			},
+			"tileFilter": {
+				"Timeframe": ""
+			},
+			"markdown": "###sa-meta\n```json\n{\n\n\n}\n\n```",
+			"DDID": null
+		}
+	],
+	"SAConfig": {
+		"strategies": [
+			{
+				"name": "OVERWRITE"
+			}
+		]
+	}
+}

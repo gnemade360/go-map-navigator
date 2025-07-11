@@ -1,0 +1,36 @@
+{
+	"dashboards": [
+		{
+			"id": "1ffb752a-0818-4508-8c9f-b7de10f2f3c7",
+			"name": "New dashboard (Feb 10, 2022 15:38:04)",
+			"owner": "I836036",
+			"tags": [
+				{
+					"id": "one"
+				},
+				{
+					"id": "two"
+				},
+				{
+					"id": "three"
+				}
+			]
+		},
+		{
+			"id": "de056a78-34b4-4563-8640-7c6503b23669",
+			"name": "[COBALT-0002] - [SAP Ariba Docker] - Ganesh-cloned",
+			"owner": "I517945",
+			"tags": [
+				{
+					"id": "four"
+				},
+				{
+					"id": "five"
+				},
+				{
+					"id": "six"
+				}
+			]
+		}
+	]
+}

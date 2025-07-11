@@ -1,0 +1,10 @@
+{
+	"active": true,
+	"alertingProfile": "81dde0f4-c1b9-3863-9a4d-d404f4107725",
+	"channel": "#ob-dt-alerts",
+	"id": "cd5509ba-7f2c-3539-912a-eaa51ff3d29f",
+	"name": "Host Availability",
+	"title": "{State} Problem {ProblemID}: {ImpactedEntity}",
+	"type": "SLACK",
+	"url": null
+}
