@@ -2,8 +2,8 @@
 
 A flexible Go library for navigating, querying, and modifying nested map and slice data structures using simple string paths.
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/passionintellectual/go-map-navigator.svg)](https://pkg.go.dev/github.com/passionintellectual/go-map-navigator)
-[![Go Report Card](https://goreportcard.com/badge/github.com/passionintellectual/go-map-navigator)](https://goreportcard.com/report/github.com/passionintellectual/go-map-navigator)
+[![Go Reference](https://pkg.go.dev/badge/github.com/gnemade360/go-map-navigator.svg)](https://pkg.go.dev/github.com/gnemade360/go-map-navigator)
+[![Go Report Card](https://goreportcard.com/badge/github.com/gnemade360/go-map-navigator)](https://goreportcard.com/report/github.com/gnemade360/go-map-navigator)
 
 ## Features
 
@@ -18,7 +18,7 @@ A flexible Go library for navigating, querying, and modifying nested map and sli
 ## Installation
 
 ```bash
-go get github.com/passionintellectual/go-map-navigator
+go get github.com/gnemade360/go-map-navigator
 ```
 
 ## Quick Start
@@ -30,7 +30,7 @@ import (
     "fmt"
     "log"
     
-    "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
+    "github.com/gnemade360/go-map-navigator/pkg/mapnavigator"
 )
 
 func main() {
@@ -93,8 +93,8 @@ import (
     "fmt"
     "strings"
     
-    "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
-    "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
+    "github.com/gnemade360/go-map-navigator/pkg/mapnavigator"
+    "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
 )
 
 func main() {
@@ -220,7 +220,7 @@ if err != nil {
 
 ## Documentation
 
-For complete API documentation, visit [pkg.go.dev](https://pkg.go.dev/github.com/passionintellectual/go-map-navigator).
+For complete API documentation, visit [pkg.go.dev](https://pkg.go.dev/github.com/gnemade360/go-map-navigator).
 
 ## Examples
 

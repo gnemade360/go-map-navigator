@@ -2,12 +2,12 @@ package map_node_expand_collection_modifier
 
 import (
 	"fmt"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
 	"strings"
 
-	map_nav_models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
-	types "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/types"
+	map_nav_models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/templates"
+	types "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/types"
 	"gopkg.in/yaml.v3"
 )
 

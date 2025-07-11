@@ -4,10 +4,10 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	map_nav_models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-replace-modifier"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
+	map_nav_models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-replace-modifier"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/templates"
 )
 
 func TestMapNodeReplaceModifier_ModifyNode(t *testing.T) {

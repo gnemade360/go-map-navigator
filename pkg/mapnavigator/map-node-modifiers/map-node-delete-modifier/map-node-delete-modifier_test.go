@@ -4,11 +4,11 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	map_navigator "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
-	map_nav_models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-delete-modifier"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
+	map_navigator "github.com/gnemade360/go-map-navigator/pkg/mapnavigator"
+	map_nav_models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-delete-modifier"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/templates"
 )
 
 func TestMapNodeDeleteModifier_ModifyNode(t *testing.T) {

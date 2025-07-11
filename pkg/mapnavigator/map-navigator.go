@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strconv"
 
-	models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
 )
 
 // MapNavigator provides functionality for navigating and modifying nested map and slice data structures.

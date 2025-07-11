@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/conditions"
-	models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
-	actionModels "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-conditional-modifier"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/conditions"
+	models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	actionModels "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-conditional-modifier"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/templates"
 )
 
 func main() {

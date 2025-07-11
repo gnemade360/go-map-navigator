@@ -2,14 +2,14 @@ package map_node_set_modifier
 
 import (
 	"fmt"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
 	"reflect"
 	"strings"
 
-	generic_value "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/generic-value"
-	map_navigator "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
-	map_nav_models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
+	generic_value "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/generic-value"
+	map_navigator "github.com/gnemade360/go-map-navigator/pkg/mapnavigator"
+	map_nav_models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/templates"
 	"gopkg.in/yaml.v3"
 )
 

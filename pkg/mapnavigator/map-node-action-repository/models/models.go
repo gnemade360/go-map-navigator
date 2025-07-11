@@ -1,8 +1,8 @@
 package models
 
 import (
-	. "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/conditions"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
+	. "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/conditions"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/templates"
 )
 
 type MapNodeModifierConfigHolder struct {

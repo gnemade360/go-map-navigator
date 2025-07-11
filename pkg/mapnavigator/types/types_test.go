@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/types"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/types"
 )
 
 func TestNewCollectionMapKey(t *testing.T) {

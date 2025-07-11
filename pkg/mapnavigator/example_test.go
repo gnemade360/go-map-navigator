@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
 )
 
 // ExampleMapNavigator demonstrates basic usage of MapNavigator for navigating nested data structures.

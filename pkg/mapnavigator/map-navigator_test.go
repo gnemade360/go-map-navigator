@@ -11,8 +11,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	. "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
-	models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	. "github.com/gnemade360/go-map-navigator/pkg/mapnavigator"
+	models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
 	"gopkg.in/yaml.v3"
 )
 

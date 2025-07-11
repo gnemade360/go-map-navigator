@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
-	models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-replace-modifier"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-set-modifier"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator"
+	models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-replace-modifier"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-set-modifier"
 )
 
 func main() {

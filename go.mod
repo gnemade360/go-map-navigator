@@ -1,4 +1,4 @@
-module github.com/passionintellectual/go-map-navigator
+module github.com/gnemade360/go-map-navigator
 
 go 1.21
 

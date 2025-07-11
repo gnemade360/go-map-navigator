@@ -1,13 +1,13 @@
 package map_node_delete_modifier
 
 import (
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
 	"reflect"
 	"strings"
 
-	map_navigator "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
-	map_nav_models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
+	map_navigator "github.com/gnemade360/go-map-navigator/pkg/mapnavigator"
+	map_nav_models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/templates"
 	"gopkg.in/yaml.v3"
 )
 

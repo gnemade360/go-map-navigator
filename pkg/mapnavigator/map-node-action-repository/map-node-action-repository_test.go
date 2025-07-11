@@ -6,16 +6,16 @@ import (
 	"sync"
 	"testing"
 
-	map_nav_models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-composite-modifier"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-conditional-modifier"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-delete-modifier"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-expand-collection-modifier"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-replace-modifier"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-set-modifier"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
+	map_nav_models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-action-repository"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-composite-modifier"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-conditional-modifier"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-delete-modifier"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-expand-collection-modifier"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-replace-modifier"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-node-modifiers/map-node-set-modifier"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/templates"
 )
 
 func TestGetMapNodeModifierRepository(t *testing.T) {

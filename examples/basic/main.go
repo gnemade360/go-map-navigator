@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator"
-	models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator"
+	models "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/map-nav-models"
 )
 
 func main() {

@@ -7,7 +7,7 @@ import (
 	"text/template"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/templates"
 )
 
 func TestNewTemplateConfig(t *testing.T) {

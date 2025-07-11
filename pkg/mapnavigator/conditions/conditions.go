@@ -2,7 +2,7 @@ package conditions
 
 import (
 	"fmt"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/templates"
 )
 
 // SaConditions represents a condition that can be evaluated

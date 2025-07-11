@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/conditions"
+	"github.com/gnemade360/go-map-navigator/pkg/mapnavigator/conditions"
 )
 
 func TestSaConditions_Evaluate(t *testing.T) {

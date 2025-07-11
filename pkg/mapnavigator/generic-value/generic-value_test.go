@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	genericvalue "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/generic-value"
+	genericvalue "github.com/gnemade360/go-map-navigator/pkg/mapnavigator/generic-value"
 )
 
 func TestToGenericValue(t *testing.T) {
