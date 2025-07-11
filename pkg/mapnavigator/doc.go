@@ -40,4 +40,6 @@
 //
 // MapNavigator instances are not thread-safe. Create separate instances
 // for concurrent operations or use appropriate synchronization mechanisms.
+//
+// Author: Ganesh Nemade
 package mapnavigator
