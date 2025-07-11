@@ -34,7 +34,7 @@ func GetMapNodeModifierRepository(templateConfig templates.TemplateConfig) *MapN
 
 func NewMapNodeModifierRepository(templateConfig templates.TemplateConfig, params ...interface{}) *MapNodeModifierRepository {
 
-	templateConfig.AddFuncMap(map[string]interface{}{})
+	// templateConfig.AddFuncMap(map[string]interface{}{})
 
 	instance := &MapNodeModifierRepository{
 		RWMutex:                   &sync.RWMutex{},

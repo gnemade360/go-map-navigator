@@ -18,7 +18,7 @@ type MapNodeReplaceModifier struct {
 }
 
 func (m *MapNodeReplaceModifier) ModifyNode(i interface{}) interface{} {
-	if m.Config != nil && m.Config.Disabled {
+	if m.Config != nil && m.Config.MapNodeModifierConfig != nil && m.Config.MapNodeModifierConfig.Disabled {
 		return i
 	}
 	//if conf, ok := m.TemplateContext["Config"]; ok {
@@ -34,9 +34,14 @@ func (m *MapNodeReplaceModifier) ModifyNode(i interface{}) interface{} {
 	}
 
 	if i == nil {
-		if m.Config.Find != "null" {
+		if m.Config == nil || m.Config.Find != "null" {
 			return i
 		} else {
+			// Special case: if looking for "null" in nil input, convert to string "null"
+			// but if ReplaceWith is empty, just return "null" without replacement
+			if m.Config.ReplaceWith == "" {
+				return "null"
+			}
 			i = "null"
 		}
 	}
@@ -47,9 +52,22 @@ func (m *MapNodeReplaceModifier) ModifyNode(i interface{}) interface{} {
 
 		m.TemplateContext["NodeValue"] = nodestr
 		m.TemplateContext["NodeValueType"] = reflect.TypeOf(i).String()
-		getVars(m.Config.Vars, m.TemplateContext, m.Config.TemplateConfig)
+		if m.Config != nil {
+			if m.Config.MapNodeModifierConfig != nil && m.Config.TemplateConfigHolder != nil {
+				getVars(m.Config.MapNodeModifierConfig.Vars, m.TemplateContext, m.Config.TemplateConfigHolder.TemplateConfig)
+			}
+		}
 
-		findinterpolated, err := templates.Interpolate(m.Config.Find, m.TemplateContext, m.Config.TemplateConfig)
+		tmplConfig := templates.TemplateConfig{}
+		if m.Config != nil && m.Config.TemplateConfigHolder != nil {
+			tmplConfig = m.Config.TemplateConfigHolder.TemplateConfig
+		}
+		
+		if m.Config == nil {
+			return i
+		}
+		
+		findinterpolated, err := templates.Interpolate(m.Config.Find, m.TemplateContext, tmplConfig)
 		if len(findinterpolated) == 0 || findinterpolated == "[]" || err != nil {
 			return i
 		}
@@ -58,7 +76,7 @@ func (m *MapNodeReplaceModifier) ModifyNode(i interface{}) interface{} {
 			m.TemplateContext["findResult"] = f
 			replaceWith := ""
 			fmt.Printf("\nReplace Rule-findinterpolated: %v\n", findinterpolated)
-			if tmpl, err := templates.New("m.Config.ReplaceWith", m.Config.TemplateConfig); err == nil {
+			if tmpl, err := templates.New("m.Config.ReplaceWith", tmplConfig); err == nil {
 				tmpl = tmpl.Funcs(map[string]interface{}{})
 
 				tmpl, err = templates.Parse(tmpl, m.Config.ReplaceWith)
@@ -107,6 +125,15 @@ func NewMapNodeReplaceModifier(config interface{}, mapContext map[string]interfa
 		if c, ok := config.(*models.MapNodeModifierConfig); ok {
 			if cc, okk := c.Options.(*models.MapNodeReplaceModifierConfig); okk {
 				m.Config = cc
+				m.Config.MapNodeModifierConfig = c
+			} else if mapConfig, isMap := c.Options.(map[string]interface{}); isMap {
+				optionsBytes, er := yaml.Marshal(mapConfig)
+				if er != nil {
+					return nil
+				}
+				opts := getOptionsFromByts(optionsBytes, templateConfig)
+				m.Config = opts
+				m.Config.Caption = c.Caption
 			} else {
 				optionsBytes, er := yaml.Marshal(c.Options)
 				if er != nil {
@@ -114,16 +141,18 @@ func NewMapNodeReplaceModifier(config interface{}, mapContext map[string]interfa
 				}
 				ropts := getOptionsFromByts(optionsBytes, templateConfig)
 				m.Config = ropts
-				m.Config.Caption = c.Caption
+				if c != nil {
+					m.Config.Caption = c.Caption
+				}
 			}
-		} else if mapConfig, isMap := c.Options.(map[string]interface{}); isMap {
-			optionsBytes, er := yaml.Marshal(mapConfig["options"])
+		} else {
+			mp := config
+			optionsBytes, er := yaml.Marshal(mp)
 			if er != nil {
 				return nil
 			}
 			opts := getOptionsFromByts(optionsBytes, templateConfig)
 			m.Config = opts
-			m.Config.Caption = c.Caption
 		}
 	}
 	return m

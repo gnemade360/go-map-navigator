@@ -27,7 +27,7 @@ func (m *MapNodeCompositeModifier) ModifyNode(node interface{}) interface{} {
 	//    }
 	//}
 
-	if m.Config != nil && m.Config.Disabled {
+	if m.Config != nil && m.Config.MapNodeModifierConfig != nil && m.Config.MapNodeModifierConfig.Disabled {
 		return node
 	}
 	if m.TemplateContext == nil {
@@ -37,7 +37,9 @@ func (m *MapNodeCompositeModifier) ModifyNode(node interface{}) interface{} {
 	if node != nil {
 		m.TemplateContext["NodeValueType"] = reflect.TypeOf(node).String()
 	}
-	getVars(m.Config.Vars, m.TemplateContext, m.Config.TemplateConfig)
+	if m.Config != nil && m.Config.MapNodeModifierConfig != nil {
+		getVars(m.Config.MapNodeModifierConfig.Vars, m.TemplateContext, m.Config.TemplateConfig)
+	}
 	if m.NodeActions != nil && len(m.NodeActions) > 0 {
 		for _, nodeModifier := range m.NodeActions {
 			node = nodeModifier.ModifyNode(node)

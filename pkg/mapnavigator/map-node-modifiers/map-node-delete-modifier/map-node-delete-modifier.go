@@ -19,7 +19,7 @@ type MapNodeDeleteModifier struct {
 
 func (m *MapNodeDeleteModifier) ModifyNode(i interface{}) interface{} {
 
-	if m.Config != nil && m.Config.Disabled {
+	if m.Config != nil && m.Config.MapNodeModifierConfig != nil && m.Config.MapNodeModifierConfig.Disabled {
 		return i
 	}
 	if m.TemplateContext == nil {
@@ -29,12 +29,13 @@ func (m *MapNodeDeleteModifier) ModifyNode(i interface{}) interface{} {
 		return i
 	}
 	// TODO delete the item
-	if m.Config.Selector == "-" || m.Config.Selector == "*" {
+	if m.Config != nil && (m.Config.Selector == "-" || m.Config.Selector == "*") {
 		return &map_navigator.MapNavigatorDeleted{
 			Original: i,
 		}
 	}
-	if deleteFrom, er := GetValue(m.TemplateContext, m.Config.DeleteFrom); er == nil && deleteFrom != nil {
+	if m.Config != nil && m.Config.DeleteFrom != "" {
+		if deleteFrom, er := GetValue(m.TemplateContext, m.Config.DeleteFrom); er == nil && deleteFrom != nil {
 		k := reflect.TypeOf(deleteFrom).Kind()
 		switch k {
 		case reflect.Slice:
@@ -43,10 +44,10 @@ func (m *MapNodeDeleteModifier) ModifyNode(i interface{}) interface{} {
 				Original: i,
 			}
 		}
-
+		}
 	}
 
-	if k := reflect.TypeOf(i).Kind(); k == reflect.Map {
+	if k := reflect.TypeOf(i).Kind(); k == reflect.Map && m.Config != nil {
 		accessors := getAccessors(m.Config.Selector)
 		mn := &map_navigator.MapNavigator{
 			NodeModifier: map_nav_models.MapNodeModifierFunc(func(v interface{}) interface{} {

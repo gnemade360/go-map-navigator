@@ -3,12 +3,11 @@ package map_node_expand_collection_modifier
 import (
 	"fmt"
 	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
-	"reflect"
 	"strings"
 
 	map_nav_models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
 	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
-	SaTypes "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/types"
+	types "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/types"
 	"gopkg.in/yaml.v3"
 )
 
@@ -25,7 +24,7 @@ func (m *MapNodeExpandModifier) ModifyNode(i interface{}) interface{} {
 		m.TemplateContext = map[string]interface{}{}
 	}
 
-	if m.Config != nil && m.Config.Disabled {
+	if m.Config != nil && m.Config.MapNodeModifierConfig != nil && m.Config.MapNodeModifierConfig.Disabled {
 		return i
 	}
 	if i == nil {
@@ -33,7 +32,10 @@ func (m *MapNodeExpandModifier) ModifyNode(i interface{}) interface{} {
 	}
 
 	// get array
-	repeatOnCollection := m.Config.RepeatOn
+	var repeatOnCollection []interface{}
+	if m.Config != nil {
+		repeatOnCollection = m.Config.RepeatOn
+	}
 	//get expansion path object/slice
 	if arr, isArray := i.([]interface{}); isArray && arr != nil {
 		for _, itm := range repeatOnCollection {
@@ -58,8 +60,8 @@ func (m *MapNodeExpandModifier) GetTemplatisedObject(itm interface{}) interface{
 	if len(itmTemplate) == 0 {
 		return nil
 	}
-	if itmType == nil {
-		itmType = SaTypes.Map
+	if itmType == "" {
+		itmType = types.Map
 	}
 	var newItm interface{}
 	rlimiter := m.Config.RepeatTemplate.RightLimiter
@@ -73,18 +75,24 @@ func (m *MapNodeExpandModifier) GetTemplatisedObject(itm interface{}) interface{
 	tmplConfig := templates.TemplateConfig{
 		RightDelim:    rlimiter,
 		LeftDelim:     llimiter,
-		TemplateFuncs: m.Config.TemplateConfig.TemplateFuncs,
+	}
+	if m.Config.TemplateConfigHolder != nil {
+		tmplConfig.TemplateFuncs = m.Config.TemplateConfigHolder.TemplateConfig.TemplateFuncs
 	}
 
-	if nis, err := templates.Interpolate(itmTemplate, newTemplateContext, tmplConfig); err == nil {
+	if ctx, ok := newTemplateContext.(map[string]interface{}); ok {
+		if nis, err := templates.Interpolate(itmTemplate, ctx, tmplConfig); err == nil {
 		byt := []byte(nis)
 		mp := map[string]interface{}{}
 		if er := yaml.Unmarshal(byt, &mp); er != nil {
 			fmt.Printf("\nyaml unmarshalling error while getting new repeated item-: %v\n", er)
 		}
 		return mp
+		} else {
+			fmt.Printf("\nError while templating the repeating item-err: %v\n", err)
+		}
 	} else {
-		fmt.Printf("\nError while templating the repeating item-err: %v\n", err)
+		fmt.Printf("\nError: newTemplateContext is not a map[string]interface{}\n")
 	}
 	return newItm
 
@@ -104,21 +112,21 @@ func (m *MapNodeExpandModifier) GetNewTemplateContextForItem(itm interface{}) in
 	return nc
 }
 
-func (m *MapNodeExpandModifier) GetItemTemplate(context interface{}) (string, reflect.Type) {
+func (m *MapNodeExpandModifier) GetItemTemplate(context interface{}) (string, string) {
 	templateContext := context
 	if templateContext == nil {
 		templateContext = m.TemplateContext
 	}
 	tmpl := m.Config.RepeatTemplate.Template
 	if tTextStr, ok := tmpl.(string); ok {
-		return tTextStr, nil
+		return tTextStr, ""
 	} else if tMap, isMap := tmpl.(map[string]interface{}); isMap {
 		if byts, err := yaml.Marshal(tMap); err == nil {
-			return string(byts), SaTypes.Map
+			return string(byts), types.Map
 		}
 	}
 
-	return "", nil
+	return "", ""
 }
 
 func getAccessor(tTextStr string) []string {
@@ -163,7 +171,7 @@ func NewMapNodeExpandModifier(config interface{}, mapContext map[string]interfac
 				MapNodeModifierConfig: &models.MapNodeModifierConfig{},
 			}
 			yaml.Unmarshal(optionsBytes, opts)
-			opts.MapNodeModifierConfig = c
+			// c is not available here, need to handle differently
 			m.Config = opts
 		}
 	}

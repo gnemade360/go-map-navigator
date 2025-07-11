@@ -244,7 +244,13 @@ func (m *MapNavigator) VisitSliceNode(arr []interface{}, ks ...string) (interfac
 			return toReturn, err
 		} else {
 			if len(arr) > index {
-				return m.VisitNode(arr[index], ks[1:]...)
+				result, err := m.VisitNode(arr[index], ks[1:]...)
+				if err == nil && !m.ReadOnly && len(ks) == 1 {
+					// Only update the array element if we're at the last key
+					// (i.e., we're modifying the element itself, not a nested property)
+					arr[index] = result
+				}
+				return result, err
 			}
 		}
 	} else {

@@ -1,5 +1,10 @@
 package types
 
+// Type constants for different data types
+const (
+	Map = "map"
+)
+
 // CollectionMapKey represents a key in a collection map
 type CollectionMapKey struct {
 	Key   string

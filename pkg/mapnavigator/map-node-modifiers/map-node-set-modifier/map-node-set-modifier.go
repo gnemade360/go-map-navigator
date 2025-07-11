@@ -27,7 +27,7 @@ func (m *MapNodeSetModifier) ModifyNode(i interface{}) interface{} {
 		return i
 	}
 
-	if m.Config != nil && m.Config.Disabled {
+	if m.Config != nil && m.Config.MapNodeModifierConfig != nil && m.Config.MapNodeModifierConfig.Disabled {
 		return i
 	}
 	typ := reflect.TypeOf(i)
@@ -37,34 +37,57 @@ func (m *MapNodeSetModifier) ModifyNode(i interface{}) interface{} {
 
 		m.TemplateContext["NodeValue"] = nodestr
 		m.TemplateContext["NodeValueType"] = reflect.TypeOf(nodestr).String()
-		getVars(m.Config.Vars, m.TemplateContext, m.Config.TemplateConfig)
+		if m.Config != nil {
+			if m.Config.MapNodeModifierConfig != nil && m.Config.TemplateConfigHolder != nil {
+				getVars(m.Config.MapNodeModifierConfig.Vars, m.TemplateContext, m.Config.TemplateConfigHolder.TemplateConfig)
+			}
 
-		if finalStr, er := templates.Interpolate(m.Config.ValueToSet, m.TemplateContext, m.Config.TemplateConfig); er == nil {
-			return finalStr
-		} else {
-			fmt.Printf("\nwarn-er: %v\n", er)
+			tmplConfig := templates.TemplateConfig{}
+			if m.Config.TemplateConfigHolder != nil {
+				tmplConfig = m.Config.TemplateConfigHolder.TemplateConfig
+			}
+			if finalStr, er := templates.Interpolate(m.Config.ValueToSet, m.TemplateContext, tmplConfig); er == nil {
+				return finalStr
+			} else {
+				fmt.Printf("\nwarn-er: %v\n", er)
+			}
 		}
 	} else if kind != reflect.Map && kind != reflect.Slice {
 		str := (&generic_value.SedulousTypeConverter{}).ConvertToString(i)
 
 		m.TemplateContext["NodeValue"] = str
 		m.TemplateContext["NodeValueType"] = typ.String()
-		getVars(m.Config.Vars, m.TemplateContext, m.Config.TemplateConfig)
+		if m.Config != nil {
+			if m.Config.MapNodeModifierConfig != nil && m.Config.TemplateConfigHolder != nil {
+				getVars(m.Config.MapNodeModifierConfig.Vars, m.TemplateContext, m.Config.TemplateConfigHolder.TemplateConfig)
+			}
 
-		//m.TemplateContext["NodeValue"] = i
-		if finalStr, er := templates.Interpolate(m.Config.ValueToSet, m.TemplateContext, m.Config.TemplateConfig); er == nil {
+			tmplConfig := templates.TemplateConfig{}
+			if m.Config.TemplateConfigHolder != nil {
+				tmplConfig = m.Config.TemplateConfigHolder.TemplateConfig
+			}
+			//m.TemplateContext["NodeValue"] = i
+			if finalStr, er := templates.Interpolate(m.Config.ValueToSet, m.TemplateContext, tmplConfig); er == nil {
 			//v := reflect.ValueOf(finalStr)
 			//v.Convert(typ)
 			//vi := v.Interface()
-			return finalStr
-		} else {
-			fmt.Printf("\nwarn-er: %v\n", er)
+				return finalStr
+			} else {
+				fmt.Printf("\nwarn-er: %v\n", er)
+			}
 		}
 	} else {
 		mn := map_navigator.NewMapNavigator(m)
 		// TODO: we need to take this from options
-		mn.CreateProperty = m.Config.CreatePropertyIfAbsent
-		ks := strings.Split(m.Config.Selector, ".")
+		var ks []string
+		if m.Config != nil {
+			if m.Config.MapNodeModifierConfig != nil {
+				mn.CreateProperty = m.Config.MapNodeModifierConfig.CreatePropertyIfAbsent
+			}
+			ks = strings.Split(m.Config.Selector, ".")
+		} else {
+			ks = []string{}
+		}
 		mn.VisitNode(i, ks...)
 		return i
 	}
@@ -90,8 +113,8 @@ func NewMapNodeSetModifier(config interface{}, mapContext map[string]interface{}
 				m.Config = sopts
 
 			}
-		} else if mapConfig, isMap := c.Options.(map[string]interface{}); isMap {
-			optionsBytes, er := yaml.Marshal(mapConfig["options"])
+		} else if mapConfig, isMap := config.(map[string]interface{}); isMap {
+			optionsBytes, er := yaml.Marshal(mapConfig)
 			if er != nil {
 				return nil
 			}

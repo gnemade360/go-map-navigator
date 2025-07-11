@@ -2,7 +2,13 @@
 .cursor/
 .taskmaster/
 .claude/
+.claude
+.cursor
+.taskmaster
+.gdndocs
+coverage.html
 claude.md
+CLAUDE.md
 .idea/
 .vscode/
 *.swp

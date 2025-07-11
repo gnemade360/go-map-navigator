@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"reflect"
 	"strconv"
+	"strings"
 )
 
 // ToGenericValue converts various types to a generic interface{} value
@@ -61,7 +62,7 @@ func ToInt(value interface{}) (int, error) {
 	case float64:
 		return int(v), nil
 	case string:
-		return strconv.Atoi(v)
+		return strconv.Atoi(strings.TrimSpace(v))
 	default:
 		return 0, fmt.Errorf("cannot convert %v (type %T) to int", value, value)
 	}
@@ -70,4 +71,12 @@ func ToInt(value interface{}) (int, error) {
 // GetReflectValue returns the reflect.Value of an interface
 func GetReflectValue(value interface{}) reflect.Value {
 	return reflect.ValueOf(value)
+}
+
+// SedulousTypeConverter provides methods for converting between types
+type SedulousTypeConverter struct{}
+
+// ConvertToString converts a value to string
+func (s *SedulousTypeConverter) ConvertToString(value interface{}) string {
+	return ToString(value)
 }

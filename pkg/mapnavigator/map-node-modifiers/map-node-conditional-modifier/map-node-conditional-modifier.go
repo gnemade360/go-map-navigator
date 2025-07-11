@@ -7,7 +7,7 @@ import (
 	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-node-action-repository/models"
 
 	map_nav_models "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/map-nav-models"
-	sa_conditions_v1 "github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/conditions"
+	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/conditions"
 	"github.com/passionintellectual/go-map-navigator/pkg/mapnavigator/templates"
 	"gopkg.in/yaml.v3"
 )
@@ -18,7 +18,7 @@ type MapNodeConditionalModifier struct {
 	IfFalse         map_nav_models.MapNodeModifier
 	Config          *models.MapNodeConditionalModifierConfig
 	*models.TemplateConfigHolder
-	ConditionsExecutor *sa_conditions_v1.SaConditionsExecutor
+	ConditionsExecutor *conditions.SaConditionsExecutor
 }
 
 func (m *MapNodeConditionalModifier) ModifyNode(node interface{}) interface{} {
@@ -26,7 +26,7 @@ func (m *MapNodeConditionalModifier) ModifyNode(node interface{}) interface{} {
 		return node
 	}
 
-	if m.Config != nil && m.Config.Disabled {
+	if m.Config != nil && m.Config.MapNodeModifierConfig != nil && m.Config.MapNodeModifierConfig.Disabled {
 		return node
 	}
 
@@ -55,7 +55,13 @@ func (m *MapNodeConditionalModifier) ExecuteCondition(node interface{}) (bool, e
 	if node != nil {
 		m.TemplateContext["NodeValueType"] = reflect.TypeOf(node).String()
 	}
-	getVars(m.Config.Vars, m.TemplateContext, m.TemplateConfig)
+	if m.Config != nil && m.Config.MapNodeModifierConfig != nil {
+		tmplConfig := templates.TemplateConfig{}
+		if m.TemplateConfigHolder != nil {
+			tmplConfig = m.TemplateConfigHolder.TemplateConfig
+		}
+		getVars(m.Config.MapNodeModifierConfig.Vars, m.TemplateContext, tmplConfig)
+	}
 
 	//conditions := m.ConditionsExecutor.Conditions()
 
@@ -85,13 +91,13 @@ func NewMapNodeConditionalModifier(config interface{}, mapContext map[string]int
 			if cc, okk := c.Options.(*models.MapNodeConditionalModifierConfig); okk {
 				m.Config = cc
 				m.Config.TemplateConfigHolder = &models.TemplateConfigHolder{TemplateConfig: tmplConfig}
-				m.ConditionsExecutor = sa_conditions_v1.NewSaConditionsExecutor(
-					sa_conditions_v1.WithConditions(m.Config.Conditions),
-					sa_conditions_v1.WithTemplateConfig(tmplConfig),
+				m.ConditionsExecutor = conditions.NewSaConditionsExecutor(
+					conditions.WithConditions(m.Config.Conditions),
+					conditions.WithTemplateConfig(tmplConfig),
 				)
 			} else if ccMap, isMap := c.Options.(map[string]interface{}); isMap {
 
-				conditions := sa_conditions_v1.NewSaConditions(ccMap, "conditions")
+				conditionsObj := conditions.NewSaConditions(ccMap, "conditions")
 				delete(ccMap, "conditions")
 				optionsBytes, er := yaml.Marshal(ccMap)
 				if er != nil {
@@ -100,18 +106,18 @@ func NewMapNodeConditionalModifier(config interface{}, mapContext map[string]int
 
 				copts := getOptionsFromByts(optionsBytes, tmplConfig)
 				if ccMap != nil {
-					ccMap["conditions"] = conditions
+					ccMap["conditions"] = conditionsObj
 				}
 				// setting conditions now
 
-				m.ConditionsExecutor = sa_conditions_v1.NewSaConditionsExecutor(
-					sa_conditions_v1.WithConditions(conditions),
-					sa_conditions_v1.WithTemplateConfig(tmplConfig),
+				m.ConditionsExecutor = conditions.NewSaConditionsExecutor(
+					conditions.WithConditions(conditionsObj),
+					conditions.WithTemplateConfig(tmplConfig),
 				)
 				if len(copts.Condition) > 0 {
 					m.ConditionsExecutor.SetCondition(copts.Condition)
 				}
-				copts.Conditions = conditions
+				copts.Conditions = *conditionsObj
 				m.Config = copts
 			}
 		} else {
